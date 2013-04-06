@@ -1,0 +1,14 @@
+Usage:
+
+1. This extension is designed to be compiled against FOP 1.0.
+
+2. Because of the code the saxon9he.jar must be included always; if compiling for Xalan make sure that the Xalan JARs
+are first in order, other way around for Saxon. The errors will alert you when you run the extension.
+
+3. Examples - example XSLT stylesheets and shell scripts are provided for the two
+possibilities above.
+
+./runsaxon9he_fop10.sh example1.xml example1_saxon9_fop10.xsl out/example1_saxon9_fop10.url out example1_saxon9_fop10.if
+
+./runxalan_fop10.sh example1.xml example1_xalan_fop10.xsl out/example1_xalan_fop10.url out example1_xalan_fop10.if
+
