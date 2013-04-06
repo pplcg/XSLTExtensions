@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Build file for when you don't have NetBeans.-->
+<project name="FOPRunXSLTExt-nonb" default="default" basedir=".">
+    <description>Builds, tests, and runs the project FOPRunXSLTExt.</description>
+
+    <import file="build.xml"/>
+
+    <target name="-pre-init">
+      <property file="properties.xml"/>
+
+      <condition property="file.reference.fop.jar" value="${prebuilt.lib}/fop.jar">
+	<available file="${prebuilt.lib}/fop.jar"/>
+      </condition>
+      <condition property="file.reference.saxon9he.jar" value="${saxon.lib}/saxon9he.jar">
+	<available file="${saxon.lib}/saxon9he.jar"/>
+      </condition>      
+    </target>
+<!--
+    <target name="-post-init">
+      <echoproperties/>
+    </target>
+-->
+    <target name="-post-jar" depends="-pre-init">
+      <property name="FOPRunXSLTExt.jar" location="dist/FOPRunXSLTExt.jar"/>
+      <filterset id="jars">
+	<filter token="file.reference.fop.jar" value="${file.reference.fop.jar}"/>
+	<filter token="file.reference.saxon9he.jar" value="${file.reference.saxon9he.jar}"/>
+	<filter token="FOPRunXSLTExt.jar" value="${FOPRunXSLTExt.jar}"/>
+      </filterset>
+      <copy file="examples/runsaxon9he_fop10.sh.in" tofile="examples/runsaxon9he_fop10.sh">
+	<filterset refid="jars"/>
+      </copy>
+      <chmod file="examples/runsaxon9he_fop10.sh" perm="ugo+rx"/>
+      <copy file="examples/runxalan_fop10.sh.in" tofile="examples/runxalan_fop10.sh">
+	<filterset refid="jars"/>
+      </copy>
+      <chmod file="examples/runxalan_fop10.sh" perm="ugo+rx"/>
+    </target>
+</project>
