@@ -1,0 +1,1 @@
+java -cp FOPRunXSLTExt.jar;lib\saxon9he.jar;lib\xalan2-2.7.1.jar;lib\fop-1.0.jar;lib\xmlgraphics-commons-1.4.jar;lib\avalon-framework-4.2.0.jar;lib\commons-logging-1.1.1.jar;lib\batik-all-1.7.jar;lib\commons-io-1.4.jar;lib\serializer-2.7.1.jar net.sf.saxon.Transform -init:org.w3c.ppl.xslt.ext.fop.saxon.RunFOPExtInitializer -s:%1 -xsl:%2 -o:%3 dest_dir=%4 area_tree_filename=%5

@@ -3,6 +3,8 @@
 <project name="FOPRunXSLTExt-nonb" default="default" basedir=".">
     <description>Builds, tests, and runs the project FOPRunXSLTExt.</description>
 
+    <property name="zip.version" value="0.0.1" />
+
     <import file="build.xml"/>
 
     <target name="-pre-init">
@@ -35,5 +37,13 @@
 	<filterset refid="jars"/>
       </copy>
       <chmod file="examples/runxalan_fop10.sh" perm="ugo+rx"/>
+    </target>
+
+    <target name="zip.windows">
+      <zip destfile="FOPRunXSLTExt-windows-${zip.version}.zip">
+	<zipfileset dir="examples"
+		    includes="runsaxon9he_fop10.bat FOPRunXSLTExt.jar README example1*.* lib/** out"
+		    prefix="FOPRunXSLTExt-windows-${zip.version}" />
+      </zip>
     </target>
 </project>
