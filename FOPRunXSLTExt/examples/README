@@ -1,4 +1,60 @@
-Usage:
+FOPRunXSLTExt
+
+Produced by the Print and Page Layout Community Group at W3C.  See
+http://www.w3.org/community/ppl/.
+
+FOPRunXSLTExt is an (early) experiment in getting the area tree from
+an XSL formatter run as the result of calling an XSLT extension
+function in the same XSLT transform as will produce the "final" FO
+tree to be output for formatting as human readable pages.
+
+It was initially developed by Arved Sandstrom of MagicLamp Software
+following discussion on the public-ppl@w3.org mailing list. Further
+development now happens in the 'ppl' Mercurial repository at
+https://dvcs.w3.org/hg/ppl.
+
+FOPRunXSLTExt is written in Java and uses the Apache FOP XSL formatter
+to produce the area trees
+
+Prerequisites:
+
+1. Java runtime
+
+2. Saxon 9.4 (or later) HE jar
+
+3. FOP 1.0 XSL formatter.
+
+
+Windows:
+
+1. Get and install Java JRE
+
+2. Get and install Saxon
+
+   Saxon-HE is available from http://saxon.sourceforge.net/ as a
+   Zip-encoded archive.  Download the Zip file and extract its
+   contents onto your local disk.
+
+3. Get and install FOP 1.0
+
+   FOP distributions are available from
+   http://xmlgraphics.apache.org/fop/download.html.  Download the
+   binary distribution of FOP 1.0 and extract its contents onto your
+   local disk.
+
+4. Edit 'runsaxon9he_fop10.bat' so the line beginning "set SAXON=" has
+   the correct path to the Saxon-HE jar file on your system and so the
+   line beginning "set FOP_HOME=" has the correct path to the
+   "fop-1.0" folder that you extracted from the FOP binary
+   distribution.
+
+5. In the same directory as 'runsaxon9he_fop10.bat', run the following
+   command:
+
+      runsaxon9he_fop10.bat example1.xml example1_saxon9_fop10.xsl out/example1_saxon9_fop10.if out example1_saxon9_fop10.if
+
+
+Linux/Unix:
 
 1. This extension is designed to be compiled against FOP 1.0.
 
