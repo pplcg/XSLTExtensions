@@ -15,6 +15,12 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs">
 
+<xsl:key name="overrides" match="override" use="@id" />
+
+<xsl:variable name="overrides">
+  <no-overrides/>
+</xsl:variable>
+
 <xsl:template match="/">
   <fo:root>
     <fo:layout-master-set>
@@ -36,6 +42,18 @@
 	    color="red" space-before="5mm" space-after="5mm">
     <xsl:apply-templates/>
   </fo:block>
+</xsl:template>
+
+<xsl:template match="box">
+  <xsl:param name="overrides" select="$overrides" as="document-node()" tunnel="yes"/>
+  <fo:block-container role="{local-name()}" border="medium solid black"
+	    width="{@width}" height="{@height}" padding="12pt"
+	    id="{@id}">
+    <xsl:if test="key('overrides', @id, $overrides)/@rotate = 'yes'">
+      <xsl:attribute name="reference-orientation" select="'270'" />
+    </xsl:if>
+    <xsl:apply-templates/>
+  </fo:block-container>
 </xsl:template>
 
 <xsl:template match="paragraph">

@@ -15,7 +15,10 @@ https://dvcs.w3.org/hg/ppl, with questions and comments happening on
 the public-ppl@w3.org mailing list.
 
 FOPRunXSLTExt is written in Java and uses the Apache FOP XSL formatter
-to produce the area trees
+to produce the area trees.
+
+INSTALLATION
+============
 
 Prerequisites:
 
@@ -62,10 +65,54 @@ Linux/Unix:
 2. Because of the code the saxon9he.jar must be included always; if compiling for Xalan make sure that the Xalan JARs
 are first in order, other way around for Saxon. The errors will alert you when you run the extension.
 
-3. Examples - example XSLT stylesheets and shell scripts are provided for the two
-possibilities above.
+EXAMPLES
+========
 
-./runsaxon9he_fop10.sh example1.xml example1_saxon9_fop10.xsl out/example1_saxon9_fop10.url out example1_saxon9_fop10.if
+Example 1 - Area tree
+---------------------
 
-./runxalan_fop10.sh example1.xml example1_xalan_fop10.xsl out/example1_xalan_fop10.url out example1_xalan_fop10.if
+Produces an area tree in 'out/example1_saxon9_fop10.at'.
 
+Windows:
+
+runsaxon9he_fop10.bat example1.xml example1_saxon9_fop10.xsl out/example1_saxon9_fop10.if out example1_saxon9_fop10.at
+
+Linux/Mac:
+
+./runsaxon9he_fop10.sh example1.xml example1_saxon9_fop10.xsl out/example1_saxon9_fop10.url out example1_saxon9_fop10.at
+
+./runxalan_fop10.sh example1.xml example1_xalan_fop10.xsl out/example1_xalan_fop10.url out example1_xalan_fop10.at
+
+
+Example 3 - Rotate wide block
+-----------------------------
+
+Rotates a fixed-size box if it is too wide for the page.
+
+The <box> element in 'example3.xml' specifies its formatted height and
+width:
+
+   <box id="box001" width="8in" height="5in">
+
+With those dimensions, if you transform 'example3.xml' with
+'formatting.xsl' and format the result, the box is wider than the
+width of the page and some of the text is lost.
+
+If you transform 'example3.xml' with 'example3_saxon9_fop10.xsl',
+which uses the extension function to make an area tree during the
+transform and makes decisions based on formatted areas, the box is
+rotated when it is too wide for the page.
+
+Run the example using one of the command lines below then then run an
+XSL formatter on 'out/example3_saxon9_fop10.fo' to see the result.
+
+You can change the box/@width value in 'example3.xml' and run it again
+to see whether or not the box is rotated.
+
+Windows:
+
+runsaxon9he_fop10.bat example3.xml example3_saxon9_fop10.xsl out/example3_saxon9_fop10.fo out example3_saxon9_fop10.at
+
+Linux/Mac:
+
+./runsaxon9he_fop10.sh example3.xml example3_saxon9_fop10.xsl out/example3_saxon9_fop10.fo out example3_saxon9_fop10.at
