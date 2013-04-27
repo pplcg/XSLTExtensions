@@ -24,4 +24,4 @@ set CP=%CP%;%FOP_HOME%\lib\xalan-2.7.0.jar
 set CP=%CP%;%FOP_HOME%\lib\xerxesImpl-2.7.1.jar
 set CP=%CP%;%FOPRUNXSLTEXT_HOME%\FOPRunXSLTExt.jar
 
-java -cp %CP% net.sf.saxon.Transform -init:org.w3c.ppl.xslt.ext.fop.saxon.RunFOPExtInitializer -s:%1 -xsl:%2 -o:%3 dest_dir=%4 area_tree_filename=%5
+java -cp %CP% net.sf.saxon.Transform -init:org.w3c.ppl.xslt.ext.fop.saxon.RunFOPExtInitializer -s:%1 -xsl:%2 -o:%3 -it:main dest_dir=%4 area_tree_filename=%5
