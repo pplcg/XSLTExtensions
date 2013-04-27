@@ -11,7 +11,8 @@ tree to be output for formatting as human readable pages.
 It was initially developed by Arved Sandstrom of MagicLamp Software
 following discussion on the public-ppl@w3.org mailing list. Further
 development now happens in the 'ppl' Mercurial repository at
-https://dvcs.w3.org/hg/ppl.
+https://dvcs.w3.org/hg/ppl, with questions and comments happening on
+the public-ppl@w3.org mailing list.
 
 FOPRunXSLTExt is written in Java and uses the Apache FOP XSL formatter
 to produce the area trees
