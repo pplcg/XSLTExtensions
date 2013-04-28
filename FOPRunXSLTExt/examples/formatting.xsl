@@ -22,7 +22,7 @@
 </xsl:variable>
 
 <xsl:template match="/">
-  <fo:root>
+  <fo:root font-family="verdana, sans-serif" font-size="12pt">
     <fo:layout-master-set>
       <fo:simple-page-master master-name="test-page">
 	<fo:region-body margin="1in"/>
@@ -31,15 +31,14 @@
 
     <fo:page-sequence master-reference="test-page">
       <fo:flow flow-name="xsl-region-body">
-	<xsl:apply-templates select="example" />
+	<xsl:apply-templates/>
       </fo:flow>
     </fo:page-sequence>
   </fo:root>
 </xsl:template>
 
 <xsl:template match="header">
-  <fo:block font-size="14pt" font-family="verdana, sans-serif"
-	    color="red" space-before="5mm" space-after="5mm">
+  <fo:block font-size="14pt" color="red" space-before="5mm" space-after="5mm">
     <xsl:apply-templates/>
   </fo:block>
 </xsl:template>
@@ -57,8 +56,7 @@
 </xsl:template>
 
 <xsl:template match="paragraph">
-  <fo:block id="{@id}" text-indent="5mm"
-	    font-family="verdana, sans-serif" font-size="12pt">
+  <fo:block id="{@id}" text-indent="5mm" space-before="3pt">
     <xsl:apply-templates/>
   </fo:block>
 </xsl:template>
@@ -67,6 +65,42 @@
   <fo:instream-foreign-object id="{@id}">
     <xsl:copy-of select="document(@href)"/>
   </fo:instream-foreign-object>
+</xsl:template>
+
+<xsl:template match="list">
+  <xsl:param name="overrides" select="$overrides" as="document-node()" tunnel="yes"/>
+  <fo:list-block
+      provisional-distance-between-starts="{if (@label-width = 'narrow')
+                                              then '10mm'
+                                            else '35mm'}"
+      provisional-label-separation="4pt"
+      space-after="3pt"
+      id="{@id}">
+    <!-- If we know the exact label width, set the provisional
+         distance between starts to the width plus the label
+         separation. -->
+    <xsl:if test="exists(key('overrides', @id, $overrides))">
+      <xsl:attribute
+          name="provisional-distance-between-starts"
+          select="concat(key('overrides', @id, $overrides)/@label-width, ' + 4pt')" />
+    </xsl:if>
+    <xsl:apply-templates/>
+  </fo:list-block>
+</xsl:template>
+
+<xsl:template match="item">
+  <fo:list-item space-before="3pt">
+    <fo:list-item-label end-indent="label-end()">
+      <fo:block>
+        <xsl:apply-templates select="@label"/>
+      </fo:block>
+    </fo:list-item-label>
+    <fo:list-item-body start-indent="body-start()">
+      <fo:block>
+        <xsl:apply-templates/>
+      </fo:block>
+    </fo:list-item-body>
+  </fo:list-item>
 </xsl:template>
 
 </xsl:stylesheet>
