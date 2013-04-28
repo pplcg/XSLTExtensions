@@ -3,7 +3,7 @@
 <project name="FOPRunXSLTExt-nonb" default="default" basedir=".">
     <description>Builds, tests, and runs the project FOPRunXSLTExt.</description>
 
-    <property name="zip.version" value="0.0.2" />
+    <property name="zip.version" value="0.0.3" />
 
     <import file="build.xml"/>
 
@@ -42,7 +42,7 @@
     <target name="zip.windows">
       <zip destfile="FOPRunXSLTExt-windows-${zip.version}.zip">
 	<zipfileset dir="examples"
-		    includes="runsaxon9he_fop10.bat FOPRunXSLTExt.jar README example1*.* out"
+		    includes="runsaxon9he_fop10.bat FOPRunXSLTExt.jar README example*.xml example*.xsl out"
 		    prefix="FOPRunXSLTExt-windows-${zip.version}" />
       </zip>
     </target>
