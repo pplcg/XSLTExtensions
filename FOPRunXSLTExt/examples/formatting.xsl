@@ -51,6 +51,10 @@
     <xsl:if test="key('overrides', @id, $overrides)/@rotate = 'yes'">
       <xsl:attribute name="reference-orientation" select="'270'" />
     </xsl:if>
+    <xsl:if test="key('overrides', @id, $overrides)/@font-size">
+      <xsl:attribute name="font-size"
+                     select="concat(key('overrides', @id, $overrides)/@font-size, 'pt')" />
+    </xsl:if>
     <xsl:apply-templates/>
   </fo:block-container>
 </xsl:template>
@@ -91,7 +95,7 @@
 <xsl:template match="item">
   <fo:list-item space-before="3pt">
     <fo:list-item-label end-indent="label-end()">
-      <fo:block>
+      <fo:block color="red">
         <xsl:apply-templates select="@label"/>
       </fo:block>
     </fo:list-item-label>
