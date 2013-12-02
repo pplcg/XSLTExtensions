@@ -154,3 +154,19 @@ and get the area tree, and determining the maximum widths from the
 area tree.  The document that is formatted mid-transform is, unlike in
 previous examples, a different document to the one used to produce the
 final output.
+
+
+Example 5 - Copyfitting by adjusting 'font-size'
+------------------------------------------------
+
+Adjusts the 'font-size' property until the formatted text fills a
+'fo:block-container'.
+
+The stylesheet includes a 'do-box' named template that -- based on the
+provided text and the initial values of minimum, optimum, and
+maximum font sizes, the tolerance for a good fit, and the maximum
+number of iterations -- runs the XSL formatter on the provided text
+and, when the size of the formatted text differs from the required
+size by more than the tolerance, iteratively calls itself again with
+adjusted font size limits until either the formatted size is within
+the tolerance or the maximum number of iterations is reached.
