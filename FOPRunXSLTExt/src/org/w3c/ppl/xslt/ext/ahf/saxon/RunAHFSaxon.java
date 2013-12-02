@@ -66,21 +66,31 @@ public class RunAHFSaxon extends ExtensionFunctionDefinition {
                 Document foTree = (Document) DocumentOverNodeInfo.wrap(item);
                 ByteArrayInputStream isFo = null;
                 ByteArrayOutputStream osAt = null;
+                XfoObj axfo = null;
                 try {
                     isFo = new ByteArrayInputStream(nodeToString(foTree).getBytes("UTF-8"));
                     osAt = new ByteArrayOutputStream();
                     
-                    XfoObj axfo = new XfoObj();
+                    axfo = new XfoObj();
                     ErrDump eDump = new ErrDump();
                     axfo.setMessageListener(eDump);
                     axfo.setExitLevel(4);
                     axfo.render(isFo, osAt, "@AreaTree");
+                    StreamSource sAt = new StreamSource(new ByteArrayInputStream(osAt.toByteArray()));
+                    return Value.asIterator(new ObjectValue(sAt));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new XPathException(ex);
                 }
-                StreamSource sAt = new StreamSource(new ByteArrayInputStream(osAt.toByteArray()));
-                return Value.asIterator(new ObjectValue(sAt));
+		finally {
+                    try {
+			if (axfo != null)
+                            axfo.releaseObjectEx();
+                    } catch (XfoException e) {
+                        System.out.println("ErrorLevel = " + e.getErrorLevel() + "\nErrorCode = " + e.getErrorCode() + "\n" + e.getErrorMessage());
+                        return null;
+                    }
+		}
             }
         };
     }
