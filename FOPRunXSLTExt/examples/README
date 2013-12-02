@@ -89,6 +89,18 @@ Example 3 - Rotate wide block
 
 Rotates a fixed-size box if it is too wide for the page.
 
+This is effectively a simplified version of requirement #10 from
+CustomerRequirements (on the 'ppl' wiki). That requirement is for
+knowing whether a table should be column-wide, page-wide, or rotated
+to to be page-high based on its formatted size. To do that, the
+stylesheet would have to get the sizes of the table when it's
+formatted to be column-wide, page-wide, and page-high and, based on
+those, decide which width and orientation to use for the table in the
+formatted result. This example reduces that to a single fixed-size
+block, analogous to the size of the formatted table, and the
+stylesheet just makes the single decision whether or not to rotate the
+block based on its formatted width.
+
 The <box> element in 'example3.xml' specifies its formatted height and
 width:
 
@@ -116,3 +128,29 @@ runsaxon9he_fop10.bat example3.xml example3_saxon9_fop10.xsl out/example3_saxon9
 Linux/Mac:
 
 ./runsaxon9he_fop10.sh example3.xml example3_saxon9_fop10.xsl out/example3_saxon9_fop10.fo out example3_saxon9_fop10.at
+
+
+Example 4 - List item label width
+---------------------------------
+
+Adjusts the lengths allowed for list items to exactly fit the
+formatted width of the list item labels.
+
+This demonstrates a solution to requirement #9, "Ability to modify
+label field width in a single list when labels are large", from
+http://www.w3.org/community/ppl/wiki/CustomerRequirements on the 'ppl'
+wiki.
+
+'example4.xml' includes two lists that, when transformed with
+'formatting.xsl' and formatted, have list item label widths that are
+either too wide or too narrow for the labels in the lists.
+
+When transformed with 'example4_saxon9_fop10.xsl' and formatted, the
+list item label widths are set based on the actual maximum formatted
+width of the labels in each list.  The 'example4_saxon9_fop10.xsl'
+stylesheet does this by constructing a test document containing just
+the list item label texts, using the extension function to format that
+and get the area tree, and determining the maximum widths from the
+area tree.  The document that is formatted mid-transform is, unlike in
+previous examples, a different document to the one used to produce the
+final output.

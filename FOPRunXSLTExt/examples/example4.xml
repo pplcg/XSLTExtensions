@@ -1,0 +1,17 @@
+<example name="Example 4">
+<header>Print and Page Layout Community Group</header>
+
+<paragraph id="para001">The Print and Page Layout Community Group is:
+</paragraph>
+<list id="list001">
+  <item label="1.1">the "virtual water cooler"</item>
+  <item label="1.45678">where you can hang out</item>
+</list>
+
+<paragraph id="para002">The Print and Page Layout Community Group is:
+</paragraph>
+<list id="list002" label-width="narrow">
+  <item label="1.1">the "virtual water cooler"</item>
+  <item label="1.456">where you can hang out</item>
+</list>
+</example>
