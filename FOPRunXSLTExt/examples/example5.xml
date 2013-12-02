@@ -1,0 +1,7 @@
+<example name="Example 4">
+<header>Print and Page Layout Community Group</header>
+
+<box id="box001" width="360pt" height="360pt">
+<paragraph id="para001">The Print and Page Layout Community Group is the "virtual water cooler" where you can hang out.</paragraph>
+</box>
+</example>
