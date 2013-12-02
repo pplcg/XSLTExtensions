@@ -4,4 +4,5 @@
 
 <entry key="prebuilt.lib">/usr/share/java</entry>
 <entry key="saxon.lib">/usr/local/share/saxon</entry>
+<entry key="ahf.lib">/usr/AHFormatterV61_64</entry>
 </properties>

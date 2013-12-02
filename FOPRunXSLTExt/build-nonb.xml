@@ -27,8 +27,13 @@
       <filterset id="jars">
 	<filter token="file.reference.fop.jar" value="${file.reference.fop.jar}"/>
 	<filter token="file.reference.saxon9he.jar" value="${file.reference.saxon9he.jar}"/>
+	<filter token="file.reference.ahf.jar" value="${file.reference.XfoJavaCtl.jar}"/>
 	<filter token="FOPRunXSLTExt.jar" value="${FOPRunXSLTExt.jar}"/>
       </filterset>
+      <copy file="examples/runsaxon9he_ahf61.sh.in" tofile="examples/runsaxon9he_ahf61.sh">
+	<filterset refid="jars"/>
+      </copy>
+      <chmod file="examples/runsaxon9he_ahf61.sh" perm="ugo+rx"/>
       <copy file="examples/runsaxon9he_fop10.sh.in" tofile="examples/runsaxon9he_fop10.sh">
 	<filterset refid="jars"/>
       </copy>
