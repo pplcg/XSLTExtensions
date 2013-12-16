@@ -14,14 +14,18 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:runahf="http://org.w3c.ppl.xslt/saxon-extension"
-    exclude-result-prefixes="xs runahf">
+    xmlns:ahf="http://www.antennahouse.com/names/XSL/AreaTree"
+    exclude-result-prefixes="xs ahf runahf">
 
 <!-- Common templates for formatting FOPRunXSLTExt examples -->
 <xsl:import href="formatting.xsl" />
 
 <xsl:key name="boxes" match="box" use="true()" />
 
+<!-- FOP -->
 <xsl:key name="blocks" match="block[exists(@prod-id)]" use="@prod-id" />
+<!-- Antenna House -->
+<xsl:key name="blocks" match="ahf:BlockViewportArea[exists(@id)]" use="@id" />
 
 <xsl:param name="font-size" select="12" as="xs:double" />
 
@@ -79,15 +83,23 @@
       as="document-node()?" />
 
   <xsl:variable
+      name="block"
+      select="key('blocks', key('boxes', true())[1]/@id, $area-tree)[1]"
+      as="element()" />
+
+  <xsl:variable
       name="bpd"
-      select="key('blocks', key('boxes', true())[1]/@id, $area-tree)[1]/block/@bpd"
-      as="xs:integer" />
+      select="($block/block/@bpd,
+	       xs:double(substring-before($block/*/ahf:BlockArea/@height, 'pt')) * 1000)[1]"
+      as="xs:double" />
 
   <xsl:variable
       name="target-height"
       select="xs:double(substring-before(key('boxes', true())[1]/@height, 'pt'))"
       as="xs:double" />
 
+  <xsl:message select="concat('bpd: ', $bpd)" />
+  <xsl:message select="concat('target-height: ', $target-height)" />
   <xsl:choose>
     <xsl:when test="$iteration eq $iteration-max">
       <xsl:message>Maximum iterations.</xsl:message>
