@@ -155,7 +155,7 @@
             select="($font-size + $font-size.maximum) div 2"
             as="xs:double" />
         <xsl:with-param
-            name="font-size.mimimum"
+            name="font-size.minimum"
             select="$font-size"
             as="xs:double"
             tunnel="yes" />
