@@ -81,7 +81,8 @@ public class RunAHFSaxon extends ExtensionFunctionDefinition {
                     StreamSource sAt = new StreamSource(new ByteArrayInputStream(osAt.toByteArray()));
                     //return new ObjectValue(context.getConfiguration().buildDocument(sAt));
                     //return new ObjectValue(sAt);
-                    return new ObjectValue(DocumentOverNodeInfo.wrap(context.getConfiguration().buildDocument(sAt)));
+                    //return new ObjectValue(DocumentOverNodeInfo.wrap(context.getConfiguration().buildDocument(sAt)));
+                    return context.getConfiguration().buildDocument(sAt);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new XPathException(ex);
