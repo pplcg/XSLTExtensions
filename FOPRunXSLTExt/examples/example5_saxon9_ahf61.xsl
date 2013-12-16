@@ -31,10 +31,19 @@
 
 <!-- Where to write the output files. -->
 <xsl:param name="dest_dir" select="out" as="xs:string"/>
+<!-- Allowed difference in height between outer box and formatted
+     paragraph text to be able to say paragraph fits within box and
+     stop further iterations. -->
 <xsl:param name="tolerance" select="1" as="xs:double" />
+<!-- Difference between font-size.minimum and font-size.maximum below
+     which it's not worth continuing. -->
+<xsl:param name="font-size-tolerance" select="0.01" as="xs:double" />
 
 <!-- Initial template -->
 <xsl:template name="main">
+  <xsl:message select="concat('tolerance: ', $tolerance)" />
+  <xsl:message select="concat('font-size-tolerance: ', $font-size-tolerance)" />
+
   <xsl:call-template name="do-box">
     <xsl:with-param name="font-size" select="$font-size" as="xs:double" />
     <xsl:with-param
@@ -44,6 +53,7 @@
     <xsl:with-param name="iteration" select="1" as="xs:integer" />
     <xsl:with-param name="iteration-max" select="30" as="xs:integer" tunnel="yes" />
     <xsl:with-param name="tolerance" select="$tolerance" as="xs:double" tunnel="yes" />
+    <xsl:with-param name="font-size-tolerance" select="$font-size-tolerance" as="xs:double" tunnel="yes" />
   </xsl:call-template>
 </xsl:template>
 
@@ -54,6 +64,7 @@
   <xsl:param name="iteration" select="1" as="xs:integer" />
   <xsl:param name="iteration-max" select="5" as="xs:integer" tunnel="yes" />
   <xsl:param name="tolerance" select="$tolerance" as="xs:double" tunnel="yes" />
+  <xsl:param name="font-size-tolerance" select="$font-size-tolerance" as="xs:double" tunnel="yes" />
 
   <xsl:message>iteration = <xsl:value-of select="$iteration" /></xsl:message>
   <xsl:message>font-size = <xsl:value-of select="$font-size" /></xsl:message>
@@ -101,8 +112,29 @@
   <xsl:message select="concat('bpd: ', $bpd)" />
   <xsl:message select="concat('target-height: ', $target-height)" />
   <xsl:choose>
+    <xsl:when test="$target-height - ($bpd div 1000) > 0 and
+                    $target-height - ($bpd div 1000) &lt; $tolerance">
+      <xsl:message>It fits.  Using <xsl:value-of select="$font-size" />.</xsl:message>
+      <xsl:apply-templates select="/">
+        <xsl:with-param
+            name="overrides"
+            select="$overrides"
+            as="document-node()"
+            tunnel="yes" />
+      </xsl:apply-templates>
+    </xsl:when>
+    <xsl:when test="$font-size.maximum - $font-size.minimum &lt; $font-size-tolerance">
+      <xsl:message>Font size difference less than $font-size-tolerance.  Using <xsl:value-of select="$font-size" />.</xsl:message>
+      <xsl:apply-templates select="/">
+        <xsl:with-param
+            name="overrides"
+            select="$overrides"
+            as="document-node()"
+            tunnel="yes" />
+      </xsl:apply-templates>
+    </xsl:when>
     <xsl:when test="$iteration eq $iteration-max">
-      <xsl:message>Maximum iterations.</xsl:message>
+      <xsl:message>Maximum iterations.  Using <xsl:value-of select="$font-size" />.</xsl:message>
       <xsl:apply-templates select="/">
         <xsl:with-param
             name="overrides"
@@ -125,17 +157,6 @@
         <xsl:with-param name="iteration" select="$iteration + 1" as="xs:integer" />
       </xsl:call-template>
     </xsl:when>
-    <xsl:when test="$target-height - ($bpd div 1000) &lt;
-                    $target-height * $tolerance div $target-height">
-      <xsl:message>It fits.</xsl:message>
-      <xsl:apply-templates select="/">
-        <xsl:with-param
-            name="overrides"
-            select="$overrides"
-            as="document-node()"
-            tunnel="yes" />
-      </xsl:apply-templates>
-    </xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="do-box">
         <xsl:with-param
@@ -143,7 +164,7 @@
             select="($font-size + $font-size.maximum) div 2"
             as="xs:double" />
         <xsl:with-param
-            name="font-size.mimimum"
+            name="font-size.minimum"
             select="$font-size"
             as="xs:double"
             tunnel="yes" />
