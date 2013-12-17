@@ -6,9 +6,11 @@ import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.om.Item;
+import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.SequenceIterator;
 import net.sf.saxon.om.StructuredQName;
+import net.sf.saxon.query.QueryResult;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.tree.tiny.TinyDocumentImpl;
 import net.sf.saxon.value.AtomicValue;
@@ -63,25 +65,23 @@ public class RunAHFSaxon extends ExtensionFunctionDefinition {
             @Override
             public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
                 
-                TinyDocumentImpl item = (TinyDocumentImpl) arguments[0].head();
-                Document foTree = (Document) DocumentOverNodeInfo.wrap(item);
+                NodeInfo item = (NodeInfo)arguments[0].head();
                 ByteArrayInputStream isFo = null;
                 ByteArrayOutputStream osAt = null;
                 XfoObj axfo = null;
                 try {
-                    isFo = new ByteArrayInputStream(nodeToString(foTree).getBytes("UTF-8"));
+                    isFo = new ByteArrayInputStream(QueryResult.serialize(item).getBytes("UTF-8"));
                     osAt = new ByteArrayOutputStream();
                     
                     axfo = new XfoObj();
                     ErrDump eDump = new ErrDump();
                     axfo.setMessageListener(eDump);
                     axfo.setExitLevel(4);
+                    // Just setting the printer name in render() fails with
+                    // 'Unknown printer name:' message in AHF 6.1 MR3.
                     axfo.setPrinterName("@AreaTree");
                     axfo.render(isFo, osAt, "@AreaTree");
                     StreamSource sAt = new StreamSource(new ByteArrayInputStream(osAt.toByteArray()));
-                    //return new ObjectValue(context.getConfiguration().buildDocument(sAt));
-                    //return new ObjectValue(sAt);
-                    //return new ObjectValue(DocumentOverNodeInfo.wrap(context.getConfiguration().buildDocument(sAt)));
                     return context.getConfiguration().buildDocument(sAt);
                 } catch (Exception ex) {
                     ex.printStackTrace();
