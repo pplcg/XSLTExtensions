@@ -3,6 +3,7 @@ package org.w3c.ppl.xslt.ext.fop;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import javax.xml.transform.Result;
@@ -11,6 +12,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
@@ -24,21 +26,19 @@ import org.w3c.dom.Node;
  */
 public class RunFOP {
 
-    public String executeFop(String ifName, Document foTree)
+    public void executeFop(InputStream isFo, OutputStream osAt)
             throws Exception {
 
         FopFactory fopFactory = FopFactoryFactory.createFopFactory();
         if (fopFactory == null) {
             throw new Exception("Cannot create FopFactory");
         }
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(ifName)));
-        Fop fop = fopFactory.newFop(MimeConstants.MIME_FOP_AREA_TREE, out);
+        Fop fop = fopFactory.newFop(MimeConstants.MIME_FOP_AREA_TREE, osAt);
         TransformerFactory tf = new TransformerFactoryImpl();
         Transformer transformer = tf.newTransformer();
-        Source src = new DOMSource(foTree);
+	Source src = new StreamSource(isFo);
         Result res = new SAXResult(fop.getDefaultHandler());
-        transformer.transform(src, res);
-        return ifName;
+	transformer.transform(src, res);
     }
 
     public String executeFop(String ifName, Node foTree)

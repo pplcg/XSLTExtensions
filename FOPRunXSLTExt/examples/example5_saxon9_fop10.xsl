@@ -14,25 +14,36 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:runfop="http://org.w3c.ppl.xslt/saxon-extension"
-    exclude-result-prefixes="xs runfop">
+    xmlns:ahf="http://www.antennahouse.com/names/XSL/AreaTree"
+    exclude-result-prefixes="xs ahf runfop">
 
 <!-- Common templates for formatting FOPRunXSLTExt examples -->
 <xsl:import href="formatting.xsl" />
 
 <xsl:key name="boxes" match="box" use="true()" />
 
+<!-- FOP -->
 <xsl:key name="blocks" match="block[exists(@prod-id)]" use="@prod-id" />
+<!-- Antenna House -->
+<xsl:key name="blocks" match="ahf:BlockViewportArea[exists(@id)]" use="@id" />
 
 <xsl:param name="font-size" select="12" as="xs:double" />
 
 <!-- Where to write the output files. -->
 <xsl:param name="dest_dir" select="out" as="xs:string"/>
-<xsl:param name="area_tree_filename" />
-
+<!-- Allowed difference in height between outer box and formatted
+     paragraph text to be able to say paragraph fits within box and
+     stop further iterations. -->
 <xsl:param name="tolerance" select="1" as="xs:double" />
+<!-- Difference between font-size.minimum and font-size.maximum below
+     which it's not worth continuing. -->
+<xsl:param name="font-size-tolerance" select="0.01" as="xs:double" />
 
 <!-- Initial template -->
 <xsl:template name="main">
+  <xsl:message select="concat('tolerance: ', $tolerance)" />
+  <xsl:message select="concat('font-size-tolerance: ', $font-size-tolerance)" />
+
   <xsl:call-template name="do-box">
     <xsl:with-param name="font-size" select="$font-size" as="xs:double" />
     <xsl:with-param
@@ -42,6 +53,7 @@
     <xsl:with-param name="iteration" select="1" as="xs:integer" />
     <xsl:with-param name="iteration-max" select="30" as="xs:integer" tunnel="yes" />
     <xsl:with-param name="tolerance" select="$tolerance" as="xs:double" tunnel="yes" />
+    <xsl:with-param name="font-size-tolerance" select="$font-size-tolerance" as="xs:double" tunnel="yes" />
   </xsl:call-template>
 </xsl:template>
 
@@ -52,28 +64,12 @@
   <xsl:param name="iteration" select="1" as="xs:integer" />
   <xsl:param name="iteration-max" select="5" as="xs:integer" tunnel="yes" />
   <xsl:param name="tolerance" select="$tolerance" as="xs:double" tunnel="yes" />
-
-  <xsl:variable name="area_tree_filename_basename"
-                select="replace($area_tree_filename, '\.[^.]+$', '')"
-                as="xs:string" />
-  <xsl:variable name="area_tree_filename_suffix"
-                select="tokenize($area_tree_filename, '\.')[last()]"
-                as="xs:string" />
-  <xsl:variable name="area_tree_file"
-		select="concat($dest_dir,
-                               '/',
-                               $area_tree_filename_basename,
-                               '-',
-                               $iteration,
-                               '.',
-                               $area_tree_filename_suffix)"
-                as="xs:string" />
+  <xsl:param name="font-size-tolerance" select="$font-size-tolerance" as="xs:double" tunnel="yes" />
 
   <xsl:message>iteration = <xsl:value-of select="$iteration" /></xsl:message>
   <xsl:message>font-size = <xsl:value-of select="$font-size" /></xsl:message>
   <xsl:message>font-size.minimum = <xsl:value-of select="$font-size.minimum" /></xsl:message>
   <xsl:message>font-size.maximum = <xsl:value-of select="$font-size.maximum" /></xsl:message>
-  <xsl:message>Area tree filename = <xsl:value-of select="$area_tree_file" /></xsl:message>
 
   <xsl:variable name="overrides">
     <overrides>
@@ -93,13 +89,8 @@
   </xsl:variable>
 
   <xsl:variable
-      name="url"
-      select="runfop:area-tree-url($fo_tree, $area_tree_file)"
-      as="xs:string" />
-
-  <xsl:variable
       name="area-tree"
-      select="document($url)"
+      select="runfop:area-tree($fo_tree)"
       as="document-node()?" />
 
   <xsl:variable
@@ -112,6 +103,8 @@
       select="xs:double(substring-before(key('boxes', true())[1]/@height, 'pt'))"
       as="xs:double" />
 
+  <xsl:message select="concat('bpd: ', $bpd)" />
+  <xsl:message select="concat('target-height: ', $target-height)" />
   <xsl:choose>
     <xsl:when test="$iteration eq $iteration-max">
       <xsl:message>Maximum iterations.</xsl:message>
@@ -136,17 +129,6 @@
             tunnel="yes" />
         <xsl:with-param name="iteration" select="$iteration + 1" as="xs:integer" />
       </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$target-height - ($bpd div 1000) &lt;
-                    $target-height * $tolerance div $target-height">
-      <xsl:message>It fits.</xsl:message>
-      <xsl:apply-templates select="/">
-        <xsl:with-param
-            name="overrides"
-            select="$overrides"
-            as="document-node()"
-            tunnel="yes" />
-      </xsl:apply-templates>
     </xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="do-box">
