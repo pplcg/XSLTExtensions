@@ -101,16 +101,16 @@
 <!-- ============================================================= -->
 <!-- XSLT 2.0-COMPATIBLE FUNCTIONS                                 -->
 <!-- ============================================================= -->
-
-<!-- Function for use with XSLT 2.0 processors such as
+<!-- Functions for use with XSLT 2.0 processors such as
      Saxon. -->
+
 <xsl:function name="ppl:area-tree" as="document-node()">
   <xsl:param name="fo-tree" as="node()" />
 
   <xsl:sequence select="se:area-tree($fo-tree)"/>
 </xsl:function>
 
-<xsl:function name="ppl:block" as="node()?">
+<xsl:function name="ppl:block-by-id" as="node()?">
   <xsl:param name="area-tree" as="document-node()" />
   <xsl:param name="id" as="xs:string" />
 

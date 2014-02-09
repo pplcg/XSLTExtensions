@@ -107,9 +107,15 @@
       as="document-node()?" />
 
   <xsl:variable
+      name="block"
+      select="ppl:block-by-id($area-tree, key('boxes', true())[1]/@id)"
+      as="element()" />
+
+  <xsl:variable
       name="bpd"
-      select="ppl:block($area-tree, key('boxes', true())[1]/@id)/block/@bpd"
-      as="xs:integer" />
+      select="(xs:double($block/block/@bpd) div 1000,
+	       xs:double(substring-before($block/*/ahf:BlockArea/@height, 'pt')))[1]"
+      as="xs:double" />
 
   <xsl:variable
       name="target-height"
@@ -150,7 +156,7 @@
             tunnel="yes" />
       </xsl:apply-templates>
     </xsl:when>
-    <xsl:when test="$bpd div 1000 > $target-height">
+    <xsl:when test="$bpd > $target-height">
       <xsl:call-template name="do-box">
         <xsl:with-param
             name="font-size"
