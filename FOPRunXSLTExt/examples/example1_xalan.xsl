@@ -11,14 +11,11 @@
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     version="1.0"
+    xmlns:ppl="http://www.w3.org/community/ppl/ns/"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
-    xmlns:xalan="http://xml.apache.org/xalan"
-    xmlns:runahf="runahf">
+    exclude-result-prefixes="ppl">
 
-<xalan:component prefix="runahf" functions="areaTree" elements="">
-  <xalan:script lang="javaclass"
-		src="xalan://org.w3c.ppl.xslt.ext.ahf.xalan" />
-</xalan:component>
+<xsl:import href="ppl-extensions.xsl" />
 
 <xsl:param name="dest_dir" />
 <xsl:param name="area_tree_filename" />
@@ -44,7 +41,9 @@
     </fo:root>
   </xsl:variable>
 
-  <xsl:copy-of select="runahf:RunAHFXalan.areaTree($foTree)"/>
+  <xsl:call-template name="ppl:area-tree">
+    <xsl:with-param name="fo-tree" select="$foTree"/>
+  </xsl:call-template>
 </xsl:template>
 
 <xsl:template match="header">

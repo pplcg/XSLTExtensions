@@ -40,4 +40,4 @@ CP=$CP:$FOP/lib/batik-all-1.7.jar
 CP=$CP:@file.reference.ahf.jar@
 CP=$CP:@FOPRunXSLTExt.jar@
 
-java -cp $CP org.apache.xalan.xslt.Process -IN $1 -XSL $2 -OUT $3
+java -cp $CP org.apache.xalan.xslt.Process -IN $1 -XSL $2 -OUT $3 -PARAM ppl-formatter ahf
