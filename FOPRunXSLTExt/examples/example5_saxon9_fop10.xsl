@@ -11,35 +11,48 @@
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     version="2.0"
+    xmlns:ppl="http://www.w3.org/community/ppl/ns/"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:runfop="http://org.w3c.ppl.xslt/saxon-extension"
     xmlns:ahf="http://www.antennahouse.com/names/XSL/AreaTree"
-    exclude-result-prefixes="xs ahf runfop">
+    exclude-result-prefixes="ppl xs ahf">
+
+<!-- Print and Page Layout Community Group extensions. -->
+<xsl:import href="ppl-extensions.xsl" />
 
 <!-- Common templates for formatting FOPRunXSLTExt examples -->
 <xsl:import href="formatting.xsl" />
 
+
+<!-- ============================================================= -->
+<!-- KEYS                                                          -->
+<!-- ============================================================= -->
+
+<!-- All 'box' elements in source. -->
 <xsl:key name="boxes" match="box" use="true()" />
 
-<!-- FOP -->
-<xsl:key name="blocks" match="block[exists(@prod-id)]" use="@prod-id" />
-<!-- Antenna House -->
-<xsl:key name="blocks" match="ahf:BlockViewportArea[exists(@id)]" use="@id" />
 
+<!-- ============================================================= -->
+<!-- STYLESHEET PARAMETERS                                         -->
+<!-- ============================================================= -->
+
+<!-- Initial font size. -->
 <xsl:param name="font-size" select="12" as="xs:double" />
 
-<!-- Where to write the output files. -->
-<xsl:param name="dest_dir" select="out" as="xs:string"/>
 <!-- Allowed difference in height between outer box and formatted
      paragraph text to be able to say paragraph fits within box and
      stop further iterations. -->
 <xsl:param name="tolerance" select="1" as="xs:double" />
+
 <!-- Difference between font-size.minimum and font-size.maximum below
      which it's not worth continuing. -->
 <xsl:param name="font-size-tolerance" select="0.01" as="xs:double" />
 
-<!-- Initial template -->
+
+<!-- ============================================================= -->
+<!-- INITIAL TEMPLATE                                              -->
+<!-- ============================================================= -->
+
 <xsl:template name="main">
   <xsl:message select="concat('tolerance: ', $tolerance)" />
   <xsl:message select="concat('font-size-tolerance: ', $font-size-tolerance)" />
@@ -90,12 +103,12 @@
 
   <xsl:variable
       name="area-tree"
-      select="runfop:area-tree($fo_tree)"
+      select="ppl:area-tree($fo_tree)"
       as="document-node()?" />
 
   <xsl:variable
       name="bpd"
-      select="key('blocks', key('boxes', true())[1]/@id, $area-tree)[1]/block/@bpd"
+      select="ppl:block($area-tree, key('boxes', true())[1]/@id)/block/@bpd"
       as="xs:integer" />
 
   <xsl:variable
@@ -106,8 +119,29 @@
   <xsl:message select="concat('bpd: ', $bpd)" />
   <xsl:message select="concat('target-height: ', $target-height)" />
   <xsl:choose>
+    <xsl:when test="$target-height - $bpd > 0 and
+                    $target-height - $bpd &lt; $tolerance">
+      <xsl:message>It fits.  Using <xsl:value-of select="$font-size" />.</xsl:message>
+      <xsl:apply-templates select="/">
+        <xsl:with-param
+            name="overrides"
+            select="$overrides"
+            as="document-node()"
+            tunnel="yes" />
+      </xsl:apply-templates>
+    </xsl:when>
+    <xsl:when test="$font-size.maximum - $font-size.minimum &lt; $font-size-tolerance">
+      <xsl:message>Font size difference less than $font-size-tolerance.  Using <xsl:value-of select="$font-size" />.</xsl:message>
+      <xsl:apply-templates select="/">
+        <xsl:with-param
+            name="overrides"
+            select="$overrides"
+            as="document-node()"
+            tunnel="yes" />
+      </xsl:apply-templates>
+    </xsl:when>
     <xsl:when test="$iteration eq $iteration-max">
-      <xsl:message>Maximum iterations.</xsl:message>
+      <xsl:message>Maximum iterations.  Using <xsl:value-of select="$font-size" />.</xsl:message>
       <xsl:apply-templates select="/">
         <xsl:with-param
             name="overrides"

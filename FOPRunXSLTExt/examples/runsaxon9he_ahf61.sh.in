@@ -31,4 +31,4 @@ AHF=@file.reference.ahf.jar@
 CP=$SAXON:@file.reference.ahf.jar@
 CP=$CP:@FOPRunXSLTExt.jar@
 
-java -cp $CP net.sf.saxon.Transform -init:org.w3c.ppl.xslt.ext.ahf.saxon.RunAHFExtInitializer -s:$1 -xsl:$2 -o:$3 -it:main
+java -cp $CP net.sf.saxon.Transform -init:org.w3c.ppl.xslt.ext.ahf.saxon.RunAHFExtInitializer -s:$1 -xsl:$2 -o:$3 -it:main ppl-formatter=ahf
