@@ -13,4 +13,4 @@ CP=$CP:$FOP/lib/avalon-framework-4.2.0.jar
 CP=$CP:$FOP/lib/batik-all-1.7.jar
 CP=$CP:@FOPRunXSLTExt.jar@
 
-java -cp $CP org.apache.xalan.xslt.Process -IN $1 -XSL $2 -OUT $3 -PARAM dest_dir $4 -PARAM area_tree_filename $5
+java -cp $CP org.apache.xalan.xslt.Process -IN $1 -XSL $2 -OUT $3

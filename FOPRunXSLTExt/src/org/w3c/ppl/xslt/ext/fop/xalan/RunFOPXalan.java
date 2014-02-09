@@ -9,6 +9,10 @@ import org.w3c.ppl.xslt.ext.fop.RunFOP;
  */
 public class RunFOPXalan {
     
+    public static Node areaTree(Node foTree) throws Exception {
+        return new RunFOP().executeFop(foTree);
+    }
+    
     public static String areaTreeUrl(Node foTree, String ifName) throws Exception {
         return new RunFOP().executeFop(ifName, foTree);
     }

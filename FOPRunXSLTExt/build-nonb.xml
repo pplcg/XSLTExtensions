@@ -42,6 +42,10 @@
 	<filterset refid="jars"/>
       </copy>
       <chmod file="examples/runxalan_fop10.sh" perm="ugo+rx"/>
+      <copy file="examples/runxalan_ahf61.sh.in" tofile="examples/runxalan_ahf61.sh">
+	<filterset refid="jars"/>
+      </copy>
+      <chmod file="examples/runxalan_ahf61.sh" perm="ugo+rx"/>
     </target>
 
     <target name="zip.windows">

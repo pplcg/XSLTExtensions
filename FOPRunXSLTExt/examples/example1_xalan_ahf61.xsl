@@ -13,11 +13,11 @@
     version="1.0"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     xmlns:xalan="http://xml.apache.org/xalan"
-    xmlns:runfop="runfop">
+    xmlns:runahf="runahf">
 
-<xalan:component prefix="runfop" functions="areaTree" elements="">
+<xalan:component prefix="runahf" functions="areaTree" elements="">
   <xalan:script lang="javaclass"
-		src="xalan://org.w3c.ppl.xslt.ext.fop.xalan" />
+		src="xalan://org.w3c.ppl.xslt.ext.ahf.xalan" />
 </xalan:component>
 
 <xsl:param name="dest_dir" />
@@ -44,7 +44,7 @@
     </fo:root>
   </xsl:variable>
 
-  <xsl:copy-of select="runfop:RunFOPXalan.areaTree($foTree)"/>
+  <xsl:copy-of select="runahf:RunAHFXalan.areaTree($foTree)"/>
 </xsl:template>
 
 <xsl:template match="header">

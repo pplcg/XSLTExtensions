@@ -4,7 +4,7 @@
 <!--                                                               -->
 <!-- See http://www.w3.org/community/ppl/wiki/FOPRunXSLTExt        -->
 <!--                                                               -->
-<!-- Requires Saxon 9.4 or later and FOP 1.0                       -->
+<!-- Requires Saxon 9.5 or later and FOP 1.0                       -->
 <!--                                                               -->
 <!-- Produced by the Print and Page Layout Community Group @ W3C   -->
 <!-- ============================================================= -->

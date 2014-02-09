@@ -4,7 +4,7 @@
 <!--                                                               -->
 <!-- See http://www.w3.org/community/ppl/wiki/FOPRunXSLTExt        -->
 <!--                                                               -->
-<!-- Requires Saxon 9.4 or later and FOP 1.0                       -->
+<!-- Requires Saxon 9.4 or later and FOP 1.0 or AHF 6.1            -->
 <!--                                                               -->
 <!-- Produced by the Print and Page Layout Community Group @ W3C   -->
 <!-- ============================================================= -->
@@ -38,7 +38,8 @@
 </xsl:template>
 
 <xsl:template match="header">
-  <fo:block font-size="14pt" color="red" space-before="5mm" space-after="5mm">
+  <fo:block font-size="14pt" color="red"
+	    space-before="5mm" space-after="5mm">
     <xsl:apply-templates/>
   </fo:block>
 </xsl:template>
