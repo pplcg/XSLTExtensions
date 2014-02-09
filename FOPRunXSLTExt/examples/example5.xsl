@@ -4,7 +4,7 @@
 <!--                                                               -->
 <!-- See http://www.w3.org/community/ppl/wiki/FOPRunXSLTExt        -->
 <!--                                                               -->
-<!-- Requires Saxon 9.5 or later and FOP 1.0                       -->
+<!-- Requires Saxon 9.5 or later and FOP 1.0 or AHF 6.1            -->
 <!--                                                               -->
 <!-- Produced by the Print and Page Layout Community Group @ W3C   -->
 <!-- ============================================================= -->
@@ -14,8 +14,7 @@
     xmlns:ppl="http://www.w3.org/community/ppl/ns/"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:ahf="http://www.antennahouse.com/names/XSL/AreaTree"
-    exclude-result-prefixes="ppl xs ahf">
+    exclude-result-prefixes="ppl xs">
 
 <!-- Print and Page Layout Community Group extensions. -->
 <xsl:import href="ppl-extensions.xsl" />
@@ -113,8 +112,7 @@
 
   <xsl:variable
       name="bpd"
-      select="(xs:double($block/block/@bpd) div 1000,
-	       xs:double(substring-before($block/*/ahf:BlockArea/@height, 'pt')))[1]"
+      select="ppl:block-bdp($block)"
       as="xs:double" />
 
   <xsl:variable

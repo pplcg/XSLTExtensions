@@ -110,11 +110,19 @@
   <xsl:sequence select="se:area-tree($fo-tree)"/>
 </xsl:function>
 
-<xsl:function name="ppl:block-by-id" as="node()?">
+<xsl:function name="ppl:block-by-id" as="element()?">
   <xsl:param name="area-tree" as="document-node()" />
   <xsl:param name="id" as="xs:string" />
 
   <xsl:sequence select="key('blocks', $id, $area-tree)[1]" />
+</xsl:function>
+
+<xsl:function name="ppl:block-bpd" as="xs:double">
+  <xsl:param name="block" as="element()" />
+
+  <xsl:sequence
+      select="(xs:double($block/block/@bpd) div 1000,
+	       xs:double(substring-before($block/*/ahf:BlockArea/@height, 'pt')))[1]" />
 </xsl:function>
 
 </xsl:stylesheet>
