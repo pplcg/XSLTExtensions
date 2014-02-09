@@ -4,7 +4,8 @@
 <!--                                                               -->
 <!-- See http://www.w3.org/community/ppl/wiki/FOPRunXSLTExt        -->
 <!--                                                               -->
-<!-- Requires Xalan 2.7 or later and FOP 1.0                       -->
+<!-- Requires Xalan 2.7 or later or Saxon 9.5 or later             -->
+<!-- and FOP 1.0 or later or AHF 6.1 or later                      -->
 <!--                                                               -->
 <!-- Produced by the Print and Page Layout Community Group @ W3C   -->
 <!-- ============================================================= -->
@@ -15,17 +16,12 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     exclude-result-prefixes="ppl">
 
+<!-- Print and Page Layout Community Group extensions. -->
 <xsl:import href="ppl-extensions.xsl" />
 
-<xsl:param name="dest_dir" />
-<xsl:param name="area_tree_filename" />
-
-<xsl:variable name="area_tree_file"
-	      select="concat($dest_dir, '/', $area_tree_filename)" />
-
-<xsl:template match="/">
+<xsl:template match="/" name="main">
   <!-- Make FO from source document. -->
-  <xsl:variable name="foTree">
+  <xsl:variable name="fo-tree">
     <fo:root>
       <fo:layout-master-set>
 	<fo:simple-page-master master-name="test-page">
@@ -41,8 +37,10 @@
     </fo:root>
   </xsl:variable>
 
+  <!-- Use xsl:call-template since this is a XSLT 1.0 stylesheet for
+       compatibility with Xalan. -->
   <xsl:call-template name="ppl:area-tree">
-    <xsl:with-param name="fo-tree" select="$foTree"/>
+    <xsl:with-param name="fo-tree" select="$fo-tree"/>
   </xsl:call-template>
 </xsl:template>
 
