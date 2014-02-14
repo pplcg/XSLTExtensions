@@ -112,7 +112,7 @@
 
   <xsl:variable
       name="bpd"
-      select="ppl:block-bdp($block)"
+      select="ppl:block-bpd($block)"
       as="xs:double" />
 
   <xsl:variable

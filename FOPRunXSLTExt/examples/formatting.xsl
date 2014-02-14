@@ -61,7 +61,7 @@
 </xsl:template>
 
 <xsl:template match="paragraph">
-  <fo:block id="{@id}" text-indent="5mm" space-before="3pt">
+  <fo:block id="{@id}" text-align="justify" space-before="3pt">
     <xsl:apply-templates/>
   </fo:block>
 </xsl:template>
