@@ -20,9 +20,10 @@
     xmlns:se="http://org.w3c.ppl.xslt/saxon-extension"
     xmlns:runfop="runfop"
     xmlns:runahf="runahf"
+	xmlns:runahfdotnet="pi.ep.ppl.xslt.ext.ahf.dotnet"
     xmlns:ahf="http://www.antennahouse.com/names/XSL/AreaTree"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    exclude-result-prefixes="ppl se ahf xalan runahf runfop xs">
+    exclude-result-prefixes="ppl se ahf xalan runahf runfop runahfdotnet xs">
 
 <!-- ============================================================= -->
 <!-- KEYS                                                          -->
@@ -90,6 +91,16 @@
 	      use-when="function-available('runahf:RunFOPXalan.areaTree')" />
 	</xsl:otherwise>
       </xsl:choose>
+    </xsl:when>
+    <xsl:when test="contains(system-property('xsl:vendor-url'), 'microsoft')">
+      <xsl:choose>
+        <xsl:when test="$ppl-formatter = 'ahf'">
+			<xsl:copy-of select="runahfdotnet:areaTree($fo-tree)" use-when="function-available('runahfdotnet:areatree')"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:message>Formatter <xsl:value-of select="$ppl-formatter"/> not yet supported</xsl:message>
+		</xsl:otherwise>
+	  </xsl:choose>
     </xsl:when>
     <xsl:when test="system-property('xsl:product-name') = 'SAXON'">
       <xsl:sequence select="se:area-tree($fo-tree)"/>

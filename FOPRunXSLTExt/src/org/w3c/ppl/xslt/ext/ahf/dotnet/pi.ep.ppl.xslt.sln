@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pi.ep.ppl.xslt.ext.ahf.dotnet", "pi.ep.ppl.xslt.ext.ahf.dotnet\pi.ep.ppl.xslt.ext.ahf.dotnet.csproj", "{6B6F793A-05D4-4167-B6ED-AAF5D59E22FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pi.ep.xslt.ext.interfaces", "pi.ep.xslt.ext.interfaces\pi.ep.xslt.ext.interfaces.csproj", "{7F7A7292-874A-46D2-8866-788976F0A4B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B6F793A-05D4-4167-B6ED-AAF5D59E22FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6F793A-05D4-4167-B6ED-AAF5D59E22FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6F793A-05D4-4167-B6ED-AAF5D59E22FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6F793A-05D4-4167-B6ED-AAF5D59E22FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F7A7292-874A-46D2-8866-788976F0A4B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F7A7292-874A-46D2-8866-788976F0A4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F7A7292-874A-46D2-8866-788976F0A4B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F7A7292-874A-46D2-8866-788976F0A4B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
