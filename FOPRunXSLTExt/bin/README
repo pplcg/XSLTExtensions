@@ -1,0 +1,69 @@
+Program Name:                                                     
+	pi.ep.ppl.xslt.ext.ahf.dotnet.transformer
+
+Requires:
+    .Net FrameWork 4 Client Profile
+    Antenna House Formatter 6.1 MR2a
+    (How to fit dll link to another version, see pi.ep.ppl.xslt.ext.ahf.dotnet.transformer.exe.config)
+General Description:                                              
+    DotNet XSLT-Processor Extension for Antenna House Formatter areaTree function support
+    based on the Java implementation of Print and Page Layout Community Group @ W3C
+    See http://www.w3.org/community/ppl/wiki/FOPRunXSLTExt
+License: 
+    W3C license
+Author: 
+	Markus Wiedenmaier
+    practice innovatio
+    Zum Kiesgrüble 20
+    DE-78259 Mühlhausen-Ehingen
+    mailto:info@practice-innovation.de
+    http://www.practice-innovation.de
+Versions:
+    0.1 2014-02-14 Markus Wiedenmaier
+
+	
+
+Prerequisites:
+============
+1. .Net FrameWork 4.0 Client Profile
+2. Antenna House Formatter 6.1 MR2a
+
+(FOP not supported yet)
+
+INSTALLATION
+============
+1. Get and install .Net FrameWork 4.0 Client Profile
+2. Get and install Antenna House Formatter 6.1
+3. Check pi.ep.ppl.xslt.ext.ahf.dotnet.transformer.exe.config for XfoDotNet40Ctl61.dll settings
+   Follow description if 
+   - XfoDotNet40Ctl61.dll is not Version 6.1.2013.1008
+   - XfoDotNet40Ctl61.dll is not installed in C:\Program Files\Antenna House\AHFormatterV61
+
+REBUILD
+=======
+1. Open pi.ep.ppl.xslt.sln in Visual Studio 2010
+2. Check dependency on XfoDotNet40Ctl61.dll and relocate it if necessary
+3. Check version of XfoDotNet40Ctl61.dll and fit app.config as described
+
+Use dll in your dotnet project
+==============================
+1. In your dotnet project
+   a. link to pi.ep.ppl.xslt.ext.ahf.dotnet.dll in
+   b. link to pi.ep.xslt.ext.interfaces.dll in your project
+2. Create an instance of System.Xml.Xsl.XslCompiledTransform as usual
+3. Before calling Transform(...) 
+   a. create an instance of pi.ep.ppl.xslt.ext.ahf.dotnet.RunAHF
+   b. create an instance of System.Xml.Xsl.XsltArgumentList
+4. Call System.Xml.Xsl.XsltArgumentList.AddExtensionObject
+   a. first paramter   = pi.ep.ppl.xslt.ext.ahf.dotnet.RunAHF.NamespaceURI
+   b. second parameter = Instance of pi.ep.ppl.xslt.ext.ahf.dotnet.RunAHF
+5. Call System.Xml.Xsl.XslCompiledTransform and provide instance of System.Xml.Xsl.XsltArgumentList
+   as one of the parameters, where allowed    
+
+   
+Example 1 - Area tree
+---------------------
+Produces an area tree in 'out/example1_dotnet_ahf.at'.
+
+Windows (only):
+   Example1_dotnet_ahf.bat
