@@ -1,0 +1,31 @@
+BUILD pi.ep.ppl.xslt.ext.fop.donet
+
+IKVM - http://www.ikvm.net/
+---------------------------
+1. Get IKVM from http://sourceforge.net/projects/ikvm/files/ (current build with version 7.2.4630.5)
+2. Install IKVM to your system (i.e. C:\Program Files (x86)\IVKM)
+3. Copy all IKVM.OpenJDK.*.dll s to this import directory
+4. Copy IKVM.Runtime.dll to project's import directory
+5. Copy IKVM.Runtime.JNI.dll to project's import directory
+
+Apache FOP
+---------------------------
+1. Get Apache Fop from http://xmlgraphics.apache.org/fop/ (current build with version 1.1)
+2. Install FOP to your system
+3. Create a build-directory on your system (i.e. c:\temp\fopbuild)
+4. Copy fop.jar to this directory
+5. Copy all jar files in fop/lib to this directory
+6. Run buildDotNetDLLs.bat
+   Param 1: IKVM installation directory
+   Param 2: FOP jar directory (created in Step 3)
+   Param 3: Name of output file (i.e. c:\temp\fopbuild\fop11.dll)
+   Sample buildDotNetDLLs.bat "C:\Program Files (x86)\IVKM\" "c:\temp\fopbuild" "c:\temp\fopbuild\fop11.dll)
+   Note: There are a lot of warnings in this process. AFAIK these warnings can be ignored
+7. Copy dll to project's import directory
+
+BUILD
+----------------------------
+1. Create a Solution Project in Visual Studio 2010
+2. Add pi.ep.ppl.xslt.ext.ahf.dotnet.csproj to your solution
+3. Build your solution
+   binaries are created in bin/debug or bin/release directory depending on your configuration

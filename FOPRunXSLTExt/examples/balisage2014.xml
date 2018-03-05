@@ -1,0 +1,74 @@
+<example name="Balisage 2014">
+<header>Print and Page Layout  <svg href="ppl-logo.svg" id="logo"/>  Community Group<lb/>XSLT Extensions</header>
+
+<box id="box001" width="2240pt" height="520pt">
+<paragraph id="para001">The Print and Page Layout Community Group @ W3C (<url>www.w3.org/community/ppl/</url>) is open to all aspects of page
+layout theory and practice.  It is free to join, and all are welcome at all levels of expertise.</paragraph>
+<paragraph>The open-source XSLT extension functions (<url>www.w3.org/community/ppl/wiki/XSLTExtensions</url>) allow you to run your XSL-FO formatter within your XSLT transform to get an area tree, and to do it as often as you like, so the XSLT can make decisions based on formatted areas to do things like:</paragraph>
+<list id="list009">
+  <item label="&#x2013;">Adjust the start-indent of a <code>fo:list-block</code> based on the length of the longest <code>fo:list-item-label</code> in the list; or</item>
+  <item label="&#x2014;">Size this text to be <font-size/> so it fits this box.</item>
+</list>
+</box>
+<box id="box002" width="2240pt" height="690pt" columns="2" border="none">
+<title>XSLT and XSL-FO Processors</title>
+<paragraph id="para002">The open-source extension is available for Java and DotNet and uses either the Apache FOP XSL formatter or Antenna House AHF formatter to produce the area trees.</paragraph>
+<paragraph>A single Java jar file covers four combinations of XSLT processor and XSL-FO formatter:</paragraph>
+<list id="list001">
+  <item label="&#x2013;">Saxon 9.5 and FOP</item>
+  <item label="&#x2013;">Saxon 9.5 and Antenna House</item>
+  <item label="&#x2013;">Xalan and FOP</item>
+  <item label="&#x2013;">Xalan and Antenna House</item>
+</list>
+<paragraph>The DotNet version supports:</paragraph>
+
+<list id="list002">
+  <item label="&#x2013;">DotNet 4.0 and FOP</item>
+  <item label="&#x2014;">DotNet 4.0 and Antenna House</item>
+</list>
+<title>API</title>
+<paragraph>The PPL CG provides <code>ppl:area-tree()</code> for running the formatter and getting the area tree plus a selection of convenience functions to help hide both the details of the area tree and the differences between the area trees of different XSL-FO formatters.</paragraph>
+<api-list id="list003">
+  <item>
+    <function>ppl:area-tree($fo-tree as node()) as document-node()</function>
+    <def>Runs the XSL-FO formatter on $fo-tree to get an area tree.</def>
+  </item>
+  <item>
+    <function>ppl:block-by-id($area-tree as document-node(), $id as string) as element()?</function>
+<def>Returns the block area with ID $id.</def>
+  </item>
+  <item>
+    <function>ppl:block-bpd($block as element()) as xs:double</function>
+    <def>Returns the block-progression-dimension of $block in points.</def>
+  </item>
+  <item>
+    <function>ppl:block-bpd($block as element()) as xs:double</function>
+    <def>Returns the inline-progression-dimension of $block in points.</def>
+  </item>
+  <item>
+    <function>ppl:block-available-ipd($block as element()) as xs:double</function>
+    <def>Returns the difference, in points, between the inline-progression-dimension of $block and the inline-progression-dimension of its ancestor reference area.</def>
+  </item>
+  <item>
+    <function>ppl:is-first($block as element()) as xs:boolean</function>
+    <def>Returns the value of the <code>is-first</code> trait.</def>
+  </item>
+  <item>
+    <function>ppl:is-last($block as element()) as xs:boolean</function>
+    <def>Returns the value of the <code>is-last</code> trait.</def>
+  </item>
+  <item>
+    <function>ppl:sum-lengths-to-inches($lengths as xs:string*) as xs:double</function>
+    <def>Returns the length, in inches, of the sum of a sequence of lengths represented as strings, e.g., &#x201C;<code>6pt</code>&#x201D;, etc.</def>
+  </item>
+  <item>
+    <function>ppl:sum-lengths-to-pt($lengths as xs:string*) as xs:double</function>
+    <def>Returns the length, in points (1/72 of an inch), of the sum of a sequence of lengths represented as strings, e.g., &#x201C;<code>6pt</code>&#x201D;, etc.</def>
+  </item>
+  <item>
+    <function>bogus</function>
+    <def>Not a function, just an illustration of how, by using the extension functions to find the formatted size of the function definition, the <code>fo:list-item-body</code> moves down only for long function definitions.  <code>troff</code> can do it, so why shouldn&#x2019;t we?</def>
+  </item>
+</api-list>
+</box>
+</example>

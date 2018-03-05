@@ -15,7 +15,27 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs">
 
+<!-- ============================================================= -->
+<!-- KEYS                                                          -->
+<!-- ============================================================= -->
+
 <xsl:key name="overrides" match="override" use="@id" />
+
+
+<!-- ============================================================= -->
+<!-- STYLESHEET PARAMETERS                                         -->
+<!-- ============================================================= -->
+
+<!-- Page height, if not using FO processor's default. -->
+<xsl:param name="page-height" select="()" as="xs:string?" />
+
+<!-- Page width, if not using FO processor's default. -->
+<xsl:param name="page-width" select="()" as="xs:string?" />
+
+
+<!-- ============================================================= -->
+<!-- STYLESHEET VARIABLES                                          -->
+<!-- ============================================================= -->
 
 <xsl:variable name="overrides">
   <no-overrides/>
@@ -25,6 +45,12 @@
   <fo:root font-family="verdana, sans-serif" font-size="12pt">
     <fo:layout-master-set>
       <fo:simple-page-master master-name="test-page">
+	<xsl:if test="exists($page-height)">
+	  <xsl:attribute name="page-height" select="$page-height"/>
+	</xsl:if>
+	<xsl:if test="exists($page-width)">
+	  <xsl:attribute name="page-width" select="$page-width"/>
+	</xsl:if>
 	<fo:region-body margin="1in"/>
       </fo:simple-page-master>
     </fo:layout-master-set>
@@ -40,12 +66,17 @@
 <xsl:template match="header">
   <fo:block font-size="14pt" color="red"
 	    space-before="5mm" space-after="5mm">
-    <xsl:apply-templates/>
+   <xsl:apply-templates />
   </fo:block>
 </xsl:template>
 
 <xsl:template match="box">
   <xsl:param name="overrides" select="$overrides" as="document-node()" tunnel="yes"/>
+
+  <!--
+  <xsl:message select="key('overrides', @id, $overrides)"/>
+  -->
+
   <fo:block-container role="{local-name()}" border="medium solid black"
 	    width="{@width}" height="{@height}" padding="12pt"
 	    id="{@id}">

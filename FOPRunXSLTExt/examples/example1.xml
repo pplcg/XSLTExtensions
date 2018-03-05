@@ -1,6 +1,9 @@
 <example name="Example 1">
 <header>Print and Page Layout Community Group</header>
 
-<paragraph id="para001">The Print and Page Layout Community Group is the "virtual water cooler" where you can hang out and discuss XSL-FO and related page layout technologies.
-</paragraph>
+<paragraph id="para001">The Print and Page Layout Community Group is open to all aspects of page
+layout theory and practice. We can and will cover everything from the
+Crystal Goblet through to specifications and on to the nitty-gritty of
+writing stylesheets. You will find XSL-FO discussed here, but you will
+also find other stylesheet languages, and all are equally welcome.</paragraph>
 </example>

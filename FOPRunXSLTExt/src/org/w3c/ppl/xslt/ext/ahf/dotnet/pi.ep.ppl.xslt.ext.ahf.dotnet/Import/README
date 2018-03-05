@@ -1,0 +1,14 @@
+BUILD pi.ep.ppl.xslt.ext.ahf.donet
+
+Antenna House Formatter
+----------------------------
+1. Get Antenna House Formatter from http://www.antennahouse.com
+2. Install Antenna House Formatter on your system
+3. Copy XfoDotNet40Ctl61.dll form AHF-Installation, to project's import directory
+
+BUILD
+----------------------------
+1. Create a Solution Project in Visual Studio 2010
+2. Add pi.ep.ppl.xslt.ext.ahf.dotnet.csproj to your solution
+3. Build your solution
+   binaries are created in bin/debug or bin/release directory depending on your configuration

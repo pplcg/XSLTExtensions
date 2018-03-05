@@ -31,26 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="pi.ep.xslt.ext.interfaces, Version=0.1.5172.20049, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>import\pi.ep.xslt.ext.interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="XfoDotNet40Ctl61">
-      <HintPath>C:\Program Files\Antenna House\AHFormatterV61\XfoDotNet40Ctl61.dll</HintPath>
+      <HintPath>import\XfoDotNet40Ctl61.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RunAHF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\pi.ep.xslt.ext.interfaces\pi.ep.xslt.ext.interfaces.csproj">
-      <Project>{7F7A7292-874A-46D2-8866-788976F0A4B6}</Project>
-      <Name>pi.ep.xslt.ext.interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
