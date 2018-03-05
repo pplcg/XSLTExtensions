@@ -1,7 +1,0 @@
-FOPRunXSLTExt/build
-FOPRunXSLTExt/dist
-syntax: glob
-FOPRunXSLTExt/examples/*.sh
-FOPRunXSLTExt/examples/out.*
-FOPRunXSLTExt/examples/*.fo
-FOPRunXSLTExt/examples/out
