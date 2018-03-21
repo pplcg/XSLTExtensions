@@ -8,22 +8,95 @@
     <import file="build.xml"/>
 
     <target name="-pre-init">
+      <property file="properties.local.xml"/>
       <property file="properties.xml"/>
 
-      <condition property="file.reference.fop.jar" value="${prebuilt.lib}/fop.jar">
+      <condition property="prebuilt.lib"
+		 value="${prebuilt.lib.windows}">
+	<and>
+	  <os family="windows" />
+	  <available file="${prebuilt.lib.windows}"/>
+	</and>
+      </condition>
+
+      <fail unless="prebuilt.lib"
+	    message="Could not find '$${prebuilt.lib}'" />
+
+      <condition property="file.reference.fop.jar"
+		 value="${prebuilt.lib}/fop.jar">
 	<available file="${prebuilt.lib}/fop.jar"/>
       </condition>
-      <condition property="file.reference.saxon9he.jar" value="${saxon.lib}/saxon9he.jar">
-	<available file="${saxon.lib}/saxon9he.jar"/>
+      <condition property="file.reference.fop.jar"
+		 value="${fop.dir.windows}/build/fop.jar">
+	<and>
+	  <os family="windows" />
+	  <available file="${fop.dir.windows}/build/fop.jar"/>
+	</and>
+      </condition>
+
+      <fail unless="file.reference.fop.jar"
+	    message="Could not find 'fop.jar'" />
+
+      <condition property="file.reference.saxon9he.jar"
+		 value="${saxon.lib.windows}/saxon9he.jar">
+	<and>
+	  <os family="windows" />
+	  <available file="${saxon.lib.windows}/saxon9he.jar"/>
+	</and>
       </condition>      
+      <condition property="file.reference.saxon9he.jar"
+		 value="${saxon.lib.unix}/saxon9he.jar">
+	<and>
+	  <os family="unix" />
+	  <available file="${saxon.lib.unix}/saxon9he.jar"/>
+	</and>
+      </condition>      
+
+      <fail unless="file.reference.saxon9he.jar"
+	    message="Could not find 'saxon9he.jar'" />
+
+      <condition property="file.reference.XfoJavaCtl.jar"
+		 value="${ahf.lib.windows}/XfoJavaCtl.jar">
+	<and>
+	  <os family="windows" />
+	  <available file="${ahf.lib.windows}/XfoJavaCtl.jar"/>
+	</and>
+      </condition>      
+      <condition property="file.reference.XfoJavaCtl.jar"
+		 value="${ahf.lib.unix}/XfoJavaCtl.jar">
+	<and>
+	  <os family="unix" />
+	  <available file="${ahf.lib.unix}/XfoJavaCtl.jar"/>
+	</and>
+      </condition>      
+
+      <fail unless="file.reference.XfoJavaCtl.jar"
+	    message="Could not find 'XfoJavaCtl.jar'" />
+
+      <condition property="file.reference.xalan-2.7.0.jar"
+		 value="${fop.dir.windows}/lib/xalan-2.7.0.jar">
+	<available file="${fop.dir.windows}/lib/xalan-2.7.0.jar"/>
+      </condition>      
+
+      <fail unless="file.reference.xalan-2.7.0.jar"
+	    message="Could not find 'xalan-2.7.0.jar'" />
+
+      <condition property="file.reference.xmlgraphics-commons.jar"
+		 value="${fop.dir.windows}/lib/xmlgraphics-commons-2.0.1.jar">
+	<available file="${fop.dir.windows}/lib/xmlgraphics-commons-2.0.1.jar"/>
+      </condition>      
+
+      <fail unless="file.reference.xmlgraphics-commons.jar"
+	    message="Could not find 'xmlgraphics-commons.jar'" />
     </target>
-<!--
+
     <target name="-post-init">
       <echoproperties/>
     </target>
--->
+
     <target name="-post-jar" depends="-pre-init">
-      <property name="FOPRunXSLTExt.jar" location="dist/FOPRunXSLTExt.jar"/>
+      <property name="FOPRunXSLTExt.jar"
+		location="dist/FOPRunXSLTExt.jar"/>
       <filterset id="jars">
 	<filter token="file.reference.fop.jar" value="${file.reference.fop.jar}"/>
 	<filter token="file.reference.saxon9he.jar" value="${file.reference.saxon9he.jar}"/>

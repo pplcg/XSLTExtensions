@@ -2,7 +2,12 @@
 <properties version="1.0">
 <comment>Properties for build FOPRunXSLTExt</comment>
 
-<entry key="prebuilt.lib">/usr/share/java</entry>
-<entry key="saxon.lib">/usr/local/share/saxon</entry>
-<entry key="ahf.lib">/usr/AHFormatterV61_64</entry>
+<entry key="fop.dir.windows">E:/fop-2.0</entry>
+<entry key="prebuilt.lib.windows">${fop.dir.windows}/lib</entry>
+<entry key="prebuilt.lib.unix">/usr/share/java</entry>
+<entry key="saxon.lib.windows">E:/saxon</entry>
+<entry key="saxon.lib.unix">/usr/local/share/saxon</entry>
+<entry key="ahf.version">65</entry>
+<entry key="ahf.lib.windows">C:/Program Files/Antenna House/AHFormatterV${ahf.version}/lib</entry>
+<entry key="ahf.lib.unix">/usr/AHFormatterV${ahf.version}_64/lib</entry>
 </properties>
