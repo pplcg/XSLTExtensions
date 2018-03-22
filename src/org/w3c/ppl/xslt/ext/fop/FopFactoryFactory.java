@@ -1,5 +1,6 @@
 package org.w3c.ppl.xslt.ext.fop;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -14,29 +15,6 @@ import org.apache.fop.apps.FopFactory;
 class FopFactoryFactory {
 
     static FopFactory createFopFactory() {
-        try {
-            Method newInstanceMethod = findFopFactoryCtorWithNoParams();
-            if (newInstanceMethod != null) {
-                return (FopFactory) newInstanceMethod.invoke(null);
-            }
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(FopFactoryFactory.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(FopFactoryFactory.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(FopFactoryFactory.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    private static Method findFopFactoryCtorWithNoParams() {
-        try {
-            return FopFactory.class.getMethod("newInstance", new Class[]{});
-        } catch (NoSuchMethodException ex) {
-            // NOOP
-        } catch (SecurityException ex) {
-            // NOOP
-        }
-        return null;
+        return FopFactory.newInstance(new File(".").toURI());
     }
 }
