@@ -9,10 +9,10 @@ The extension is available for Java and DotNet and uses either the Apache FOP XS
 
 The single Java jar file covers four combinations of XSLT processor and XSL-FO formatter:
 
-- Saxon 9.5 (and later) and FOP
+- Saxon 9.5 (and later) and FOP 2.0
 - Saxon 9.5 (and later) and AH Formatter
-- Xalan and FOP
-- Xalan and AH Formatter
+- Xalan and FOP (possibly out-of-date)
+- Xalan and AH Formatter (possibly out-of-date)
 
 The DotNet version supports:
 

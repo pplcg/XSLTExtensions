@@ -3,13 +3,14 @@
 <project name="FOPRunXSLTExt-nonb" default="default" basedir=".">
     <description>Builds, tests, and runs the project FOPRunXSLTExt.</description>
 
-    <property name="zip.version" value="0.0.3" />
-
     <import file="build.xml"/>
 
     <target name="-pre-init">
       <property file="properties.local.xml"/>
       <property file="properties.xml"/>
+
+      <property name="xslt.extensions.version" value="0.1.0" />
+      <property name="zip.version" value="${xslt.extensions.version}" />
 
       <condition property="prebuilt.lib"
 		 value="${prebuilt.lib.windows}">
@@ -121,11 +122,27 @@
       <chmod file="examples/runxalan_ahf61.sh" perm="ugo+rx"/>
     </target>
 
-    <target name="zip.windows">
-      <zip destfile="FOPRunXSLTExt-windows-${zip.version}.zip">
+    <target name="zip" depends="-pre-init">
+      <zip destfile="XSLTExtensions-${zip.version}.zip">
+	<zipfileset dir="."
+		    includes="README.md LICENSE.md properties.xml build-xslt-extensions.xml dist/*.jar bin/**"
+		    prefix="XSLTExtensions-${zip.version}" />
+      </zip>
+      <zip destfile="XSLTExtensions-doc-${zip.version}.zip">
+	<zipfileset dir="."
+		    includes="README.md LICENSE.md"
+		    prefix="XSLTExtensions-${zip.version}" />
+	<zipfileset dir="dist"
+		    includes="javadoc/**"
+		    prefix="XSLTExtensions-doc-${zip.version}" />
+      </zip>
+    </target>
+
+    <target name="zip.windows" depends="-pre-init">
+      <zip destfile="XSLTExtensions-windows-${zip.version}.zip">
 	<zipfileset dir="examples"
 		    includes="runsaxon9he_fop10.bat FOPRunXSLTExt.jar README example*.xml example*.xsl out"
-		    prefix="FOPRunXSLTExt-windows-${zip.version}" />
+		    prefix="XSLTExtensions-windows-${zip.version}" />
       </zip>
     </target>
 </project>

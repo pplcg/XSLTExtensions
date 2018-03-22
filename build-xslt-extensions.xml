@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="xslt.extensions" basedir="."
+	 xmlns:if="ant:if"
+	 xmlns:unless="ant:unless">
+  <description>Run PPLCG XSLT extensions.</description>
+
+  <dirname property="xslt.extensions.basedir"
+	   file="${ant.file.xslt.extensions}" />
+
+  <pathconvert property="xslt.extensions.basedir.converted" dirsep="/">
+    <path location="${xslt.extensions.basedir}" />
+    <!-- Ant under cygwin uses a lowercase drive letter, which some
+         Java programs don't recognise as a drive letter, so
+         translate. -->
+    <map from="c:" to="C:" />
+    <map from="d:" to="D:" />
+    <map from="e:" to="E:" />
+  </pathconvert>
+
+  <pathconvert property="basedir.converted" dirsep="/">
+    <path location="${basedir}" />
+    <!-- Ant under cygwin uses a lowercase drive letter, which some
+         Java programs don't recognise as a drive letter, so
+         translate. -->
+    <map from="c:" to="C:" />
+    <map from="d:" to="D:" />
+    <map from="e:" to="E:" />
+  </pathconvert>
+
+  <tstamp>
+    <format property="timestamp" pattern="yyyyMMdd" />
+  </tstamp>
+
+  <!-- XML file of properties determining or describing local
+       system configuration. -->
+  <property
+      name="xslt.extensions.system.local.properties.xml"
+      location="${xslt.extensions.basedir}/properties.local.xml"/>
+  <property file="${xslt.extensions.system.local.properties.xml}" />
+  <!-- Local file of properties determining or describing system
+       configuration. -->
+  <property
+      name="xslt.extensions.system.local.properties"
+      location="${xslt.extensions.basedir}/system.local.properties" />
+  <property file="${xslt.extensions.system.local.properties}" />
+
+  <!-- XML file of properties determining or describing system
+       configuration. -->
+  <property
+      name="xslt.extensions.system.properties.xml"
+      location="${xslt.extensions.basedir}/properties.xml"/>
+  <property file="${xslt.extensions.system.properties.xml}" />
+  <!-- File of properties determining or describing system
+       configuration. -->
+  <property
+      name="xslt.extensions.system.properties"
+      location="${xslt.extensions.basedir}/system.properties" />
+  <property file="${xslt.extensions.system.properties}" />
+
+  <!-- Environment variables as properties prefixed with 'env.'. -->
+  <property environment="env" />
+
+  <property name="force" value="false" />
+  <property name="tagged" value="false" />
+  <property name="verbose" value="false" />
+
+  <!-- Directory containing PPLCG XSLT Extensions jar file. -->
+  <property name="xslt.extensions.dist.dir"
+	    value="${xslt.extensions.basedir.converted}/dist" />
+
+  <property name="saxon.basename" value="saxon9he" />
+  <!-- saxon.jar location depends on OS. -->
+  <property name="saxon.jar.windows"
+	    value="${saxon.lib.windows}/${saxon.basename}.jar" />
+  <condition property="saxon.jar" value="${saxon.jar.windows}">
+    <and>
+      <os family="windows" />
+      <available file="${saxon.jar.windows}"/>
+    </and>
+  </condition>
+  <property name="saxon.jar.mac"
+	    value="${saxon.lib.mac}/${saxon.basename}.jar" />
+  <condition property="saxon.jar" value="${saxon.jar.mac}">
+    <and>
+      <os family="mac" />
+      <available file="${saxon.jar.mac}"/>
+    </and>
+  </condition>
+  <property name="saxon.jar.unix"
+	    value="${saxon.lib.unix}/${saxon.basename}.jar" />
+  <condition property="saxon.jar" value="${saxon.jar.unix}">
+    <and>
+      <os family="unix" />
+      <available file="${saxon.jar.unix}"/>
+    </and>
+  </condition>
+  <property name="saxon.jar" value="${saxon.jar.unix}" />
+  <!-- Fallback to something that almost certainly won't work. -->
+  <property name="saxon.jar" value="saxon.jar" />
+
+  <property name="fop.basename" value="fop" />
+  <!-- fop.jar location depends on OS. -->
+  <property name="fop.jar.windows"
+	    value="${fop.dir.windows}/build/${fop.basename}.jar" />
+  <condition property="fop.jar" value="${fop.jar.windows}">
+    <and>
+      <os family="windows" />
+      <available file="${fop.jar.windows}"/>
+    </and>
+  </condition>
+  <property name="fop.jar.mac"
+	    value="${fop.dir.mac}/build/${fop.basename}.jar" />
+  <condition property="fop.jar" value="${fop.jar.mac}">
+    <and>
+      <os family="mac" />
+      <available file="${fop.jar.mac}"/>
+    </and>
+  </condition>
+  <property name="fop.jar.unix"
+	    value="${fop.dir.unix}/build/${fop.basename}.jar" />
+  <condition property="fop.jar" value="${fop.jar.unix}">
+    <and>
+      <os family="unix" />
+      <available file="${fop.jar.unix}"/>
+    </and>
+  </condition>
+  <property name="fop.jar" value="${fop.jar.unix}" />
+  <!-- Fallback to something that almost certainly won't work. -->
+  <property name="fop.jar" value="fop.jar" />
+
+  <!-- Prebuilt lib location depends on OS. -->
+  <condition property="prebuilt.lib" value="${prebuilt.lib.windows}">
+    <and>
+      <os family="windows" />
+      <available file="${prebuilt.lib.windows}"/>
+    </and>
+  </condition>
+  <condition property="prebuilt.lib" value="${prebuilt.lib.mac}">
+    <and>
+      <os family="mac" />
+      <available file="${prebuilt.lib.mac}"/>
+    </and>
+  </condition>
+  <condition property="prebuilt.lib" value="${prebuilt.lib.unix}">
+    <and>
+      <os family="unix" />
+      <available file="${prebuilt.lib.unix}"/>
+    </and>
+  </condition>
+
+  <property name="xslt.extensions.basename" value="FOPRunXSLTExt" />
+  <property
+      name="xslt.extensions.jar"
+      value="${xslt.extensions.dist.dir}/${xslt.extensions.basename}.jar" />
+  <!-- XSL Formatter to use: 'ahf' or 'fop' -->
+  <property name="xslt.extensions.formatter" value="ahf" />
+
+  <!-- AH Formatter location, for when using AH Formatter. -->
+  <condition property="ahf.dir" value="${env.AHF65_64_HOME}">
+    <available file="${env.AHF65_64_HOME}" type="dir" />
+  </condition>
+  <condition property="ahf.dir" value="${env.AHF64_64_HOME}">
+    <available file="${env.AHF64_64_HOME}" type="dir" />
+  </condition>
+  <condition property="ahf.dir" value="${env.AHF63_64_HOME}">
+    <available file="${env.AHF63_64_HOME}" type="dir" />
+  </condition>
+
+  <!-- AH Formatter 'lib' directory -->
+  <property name="ahf.lib.dir" value="${ahf.dir}/lib" />
+  <!-- Basename of AH Formatter Java interface jar -->
+  <property name="xfojavactl.basename" value="XfoJavaCtl" />
+  <!-- Location of AH Formatter jar file -->
+  <property name="xfojavactl.jar"
+	    value="${ahf.lib.dir}/${xfojavactl.basename}.jar" />
+
+  <macrodef name="xslt.extensions.saxon"
+	    description="Run Saxon with PPLCG XSLT extensions">
+    <attribute name="formatter" default="${xslt.extensions.formatter}"
+	       description="XSL Formatter: 'ahf' or 'fop'" />
+    <attribute name="in"
+	       description="Single XML document to be styled" />
+    <attribute name="xsl"
+	       description="Location of XSLT stylesheet" />
+    <attribute name="out"
+	       description="Output name for the styled result" />
+    <attribute name="fop.jar" default="${fop.jar}"
+	       description="Location of FOP jar file" />
+    <attribute name="prebuilt.lib" default="${prebuilt.lib}"
+	       description="Location of library jar files" />
+    <attribute name="saxon.jar" default="${saxon.jar}"
+	       description="Location of Saxon jar file" />
+    <attribute name="xslt.extensions.jar" default="${xslt.extensions.jar}"
+	       description="Location of PPLCG XSLT Extensions jar file" />
+    <attribute name="xfojavactl.jar" default="${xfojavactl.jar}"
+	       description="Location of AH Formatter jar file" />
+    <attribute name="verbose" default="${verbose}"
+	       description="Whether to be verbose" />
+    <element name="args" implicit="yes" optional="yes"
+	     description="Arguments" />
+    <sequential>
+      <local name="isfop" />
+      <condition property="isfop">
+	<equals
+	    arg1="${xslt.extensions.formatter}"
+	    arg2="fop" />
+      </condition>
+      <java classname="net.sf.saxon.Transform"
+	    fork="yes">
+	<classpath>
+	  <pathelement location="@{fop.jar}" if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/xmlgraphics-commons-2.0.1.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/commons-logging-1.0.4.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/commons-io-1.3.1.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/avalon-framework-4.2.0.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/batik-all-1.8.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/serializer-2.7.0.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/xalan-2.7.0.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{prebuilt.lib}/xercesImpl-2.7.1.jar"
+	      if:set="isfop" />
+	  <pathelement
+	      location="@{saxon.jar}" />
+	  <pathelement location="@{xslt.extensions.jar}" />
+	  <pathelement
+	      location="@{xfojavactl.jar}" unless:set="isfop" />
+	</classpath>
+	<arg value="-init:org.w3c.ppl.xslt.ext.fop.saxon.RunFOPExtInitializer" if:set="isfop" />
+	<arg value="-init:org.w3c.ppl.xslt.ext.ahf.saxon.RunAHFExtInitializer" unless:set="isfop" />
+	<arg value="-s:@{in}" />
+	<arg value="-xsl:@{xsl}" />
+	<arg value="-o:@{out}" />
+	<arg value="ppl-formatter=@{formatter}" />
+	<args />
+      </java>
+    </sequential>
+  </macrodef>
+
+  <!-- Utility targets. -->
+
+  <target name="echoproperties">
+    <echoproperties />
+  </target>
+
+</project>

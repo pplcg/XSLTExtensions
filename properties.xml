@@ -10,4 +10,5 @@
 <entry key="ahf.version">65</entry>
 <entry key="ahf.lib.windows">C:/Program Files/Antenna House/AHFormatterV${ahf.version}/lib</entry>
 <entry key="ahf.lib.unix">/usr/AHFormatterV${ahf.version}_64/lib</entry>
+<entry key="xslt.extensions.version">0.1.0</entry>
 </properties>

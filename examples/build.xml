@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="examples" basedir="." default="example"
+	 xmlns:if="ant:if"
+	 xmlns:unless="ant:unless">
+  <description>PPLCG XSLT Extensions examples.</description>
+
+  <dirname property="examples.basedir" file="${ant.file.examples}" />
+
+  <pathconvert property="examples.basedir.converted" dirsep="/">
+    <path location="${examples.basedir}" />
+    <!-- Ant under cygwin uses a lowercase drive letter, which some
+   Java programs don't recognise as a drive letter, so
+   translate. -->
+    <map from="c:" to="C:" />
+    <map from="d:" to="D:" />
+    <map from="e:" to="E:" />
+  </pathconvert>
+
+  <pathconvert property="basedir.converted" dirsep="/">
+    <path location="${basedir}" />
+    <!-- Ant under cygwin uses a lowercase drive letter, which some
+   Java programs don't recognise as a drive letter, so
+   translate. -->
+    <map from="c:" to="C:" />
+    <map from="d:" to="D:" />
+    <map from="e:" to="E:" />
+  </pathconvert>
+
+  <!-- Local file of properties determining or describing local
+       configuration. -->
+  <property name="build.local.properties"
+      location="${basedir.converted}/build.local.properties" />
+  <property file="${build.local.properties}" />
+
+  <!-- XML file of properties determining or describing local
+       configuration. -->
+  <property name="properties.local.xml"
+      location="${basedir.converted}/properties.local.xml" />
+  <property file="${build.properties.xml}" />
+
+  <!-- File of properties determining or describing local
+       configuration. -->
+  <property name="build.properties"
+      location="${basedir.converted}/build.properties" />
+  <property file="${build.properties}" />
+
+  <tstamp>
+    <format property="timestamp" pattern="yyyyMMdd" />
+  </tstamp>
+
+  <!-- Directory containing PPLCG XSLT Extensions. -->
+  <property name="xslt.extensions.dir"
+	    value="${basedir.converted}/.." />
+
+  <!-- Import build file that sets up PPLCG XSLT Extensions. -->
+  <import file="${xslt.extensions.dir}/build-xslt-extensions.xml" />
+
+  <property name="out.dir"
+	    value="${basedir.converted}/out" />
+
+  <target name="init">
+    <mkdir dir="${out.dir}" />
+  </target>
+
+  <target name="in.isset">
+    <fail unless="in">$${in} must be set.</fail>
+  </target>
+
+  <target name="xsl.isset">
+    <fail unless="xsl">$${xsl} must be set.</fail>
+  </target>
+
+  <basename property="in.fo.basename" file="${in}" suffix=".fo" />
+  <basename property="in.basename"
+	    file="${in.fo.basename}" suffix=".xml" />
+
+  <property name="out"
+	    value="${out.dir}/${in.basename}.fo" />
+
+  <target name="example"
+          depends="init, in.isset, xsl.isset">
+    <xslt.extensions.saxon
+	in="${in}"
+	xsl="${xsl}"
+	out="${out}">
+    </xslt.extensions.saxon>
+  </target>
+
+  <!-- Utility targets. -->
+
+  <target name="echoproperties">
+    <echoproperties />
+  </target>
+
+</project>
